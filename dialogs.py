@@ -69,13 +69,13 @@ class Example(QtGui.QWidget):
     def initUI(self):
         vbox = QtGui.QVBoxLayout()
 
-        btn = QtGui.QPushButton('Dialog')
-        btn.setSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
-        btn.move(20, 20)
+        self.btn = QtGui.QPushButton('Dialog')
+        self.btn.setSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        self.btn.move(20, 20)
 
-        vbox.addWidget(btn)
+        vbox.addWidget(self.btn)
 
-        btn.clicked.connect(self.showDialog)
+        self.btn.clicked.connect(self.showDialog)
 
         self.lbl = QtGui.QLabel('Knowledge only matters', self)
         self.lbl.move(130, 20)
