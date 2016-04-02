@@ -59,39 +59,72 @@ from PySide import QtGui
 #             self.frm.setStyleSheet("QWidget { background-color: %s }" % col.name())
 
 
-# QtGui.QFontDialog
-class Example(QtGui.QWidget):
+# # QtGui.QFontDialog
+# class Example(QtGui.QWidget):
+#
+#     def __init__(self):
+#         super(Example, self).__init__()
+#         self.initUI()
+#
+#     def initUI(self):
+#         vbox = QtGui.QVBoxLayout()
+#
+#         self.btn = QtGui.QPushButton('Dialog')
+#         self.btn.setSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+#         self.btn.move(20, 20)
+#
+#         vbox.addWidget(self.btn)
+#
+#         self.btn.clicked.connect(self.showDialog)
+#
+#         self.lbl = QtGui.QLabel('Knowledge only matters', self)
+#         self.lbl.move(130, 20)
+#
+#         vbox.addWidget(self.lbl)
+#
+#         self.setLayout(vbox)
+#
+#         self.setGeometry(300, 300, 250, 180)
+#         self.setWindowTitle('Font Dialog')
+#         self.show()
+#
+#     def showDialog(self):
+#         font, ok = QtGui.QFontDialog.getFont()
+#         if ok:
+#             self.lbl.setFont(font)
+
+
+# QtGui.QFileDialog
+class Example(QtGui.QMainWindow):
 
     def __init__(self):
         super(Example, self).__init__()
         self.initUI()
 
     def initUI(self):
-        vbox = QtGui.QVBoxLayout()
+        self.textEdit = QtGui.QTextEdit()
+        self.setCentralWidget(self.textEdit)
+        self.statusBar()
 
-        self.btn = QtGui.QPushButton('Dialog')
-        self.btn.setSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
-        self.btn.move(20, 20)
+        openFile = QtGui.QAction(QtGui.QIcon('open.png'), 'Open', self)
+        openFile.setShortcut('Ctrl+O')
+        openFile.setStatusTip('Open new file')
+        openFile.triggered.connect(self.showDialog)
 
-        vbox.addWidget(self.btn)
+        menubar = self.menuBar()
+        fileMenu = menubar.addMenu('&File')
+        fileMenu.addAction(openFile)
 
-        self.btn.clicked.connect(self.showDialog)
-
-        self.lbl = QtGui.QLabel('Knowledge only matters', self)
-        self.lbl.move(130, 20)
-
-        vbox.addWidget(self.lbl)
-
-        self.setLayout(vbox)
-
-        self.setGeometry(300, 300, 250, 180)
-        self.setWindowTitle('Font Dialog')
+        self.setGeometry(300, 300, 350, 300)
+        self.setWindowTitle('File Dialog')
         self.show()
 
     def showDialog(self):
-        font, ok = QtGui.QFontDialog.getFont()
-        if ok:
-            self.lbl.setFont(font)
+        fname, _ = QtGui.QFileDialog.getOpenFileName(self, 'Open File', '/home')
+        f = open(fname, 'r')
+        with f:
+            data = f.read()
+            self.textEdit.setText(data)
 
 
 def main():
