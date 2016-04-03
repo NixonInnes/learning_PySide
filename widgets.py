@@ -198,27 +198,73 @@ from PySide import QtGui, QtCore
 #         self.show()
 
 
-# QtGui.QLineEdit
+# # QtGui.QSplitter
+# class Example(QtGui.QWidget):
+#
+#     def __init__(self):
+#         super(Example, self).__init__()
+#         self.initUI()
+#
+#     def initUI(self):
+#         hbox = QtGui.QHBoxLayout(self)
+#
+#         topleft = QtGui.QFrame(self)
+#         topleft.setFrameShape(QtGui.QFrame.StyledPanel)
+#
+#         topright = QtGui.QFrame(self)
+#         topright.setFrameShape(QtGui.QFrame.StyledPanel)
+#
+#         bottom = QtGui.QFrame(self)
+#         bottom.setFrameShape(QtGui.QFrame.StyledPanel)
+#
+#         splitter1 = QtGui.QSplitter(QtCore.Qt.Horizontal)
+#         splitter1.addWidget(topleft)
+#         splitter1.addWidget(topright)
+#
+#         splitter2 = QtGui.QSplitter(QtCore.Qt.Vertical)
+#         splitter2.addWidget(splitter1)
+#         splitter2.addWidget(bottom)
+#
+#         hbox.addWidget(splitter2)
+#         self.setLayout(hbox)
+#         QtGui.QApplication.setStyle(QtGui.QStyleFactory.create('Cleanlooks'))
+#
+#         self.setGeometry(300, 300, 300, 200)
+#         self.setWindowTitle('QtGui.QSplitter')
+#         self.show()
+#
+#     def onChanged(self, text):
+#         self.lbl.setText(text)
+#         self.lbl.adjustSize()
+
+
+# QtGui.QComboBox
 class Example(QtGui.QWidget):
 
     def __init__(self):
-        super(Example, self).__init__()
+        super(type(self), self).__init__()
         self.initUI()
 
     def initUI(self):
-        self.lbl = QtGui.QLabel(self)
-        self.lbl.move(60, 40)
+        self.lbl = QtGui.QLabel('Ubuntu', self)
+        combo = QtGui.QComboBox(self)
+        combo.addItems([
+            'Ubuntu',
+            'Mandriva',
+            'Fedora',
+            'Red Hat',
+            'Gentoo'
+        ])
+        combo.move(50, 50)
+        self.lbl.move(50, 150)
 
-        qle = QtGui.QLineEdit(self)
-        qle.move(60, 100)
+        combo.activated[str].connect(self.onActivated)
 
-        qle.textChanged[str].connect(self.onChanged)
-
-        self.setGeometry(300, 300, 280, 170)
-        self.setWindowTitle('QtGui.QLineEdit')
+        self.setGeometry(300, 300, 300, 200)
+        self.setWindowTitle('QtGui.QComboBox')
         self.show()
 
-    def onChanged(self, text):
+    def onActivated(self, text):
         self.lbl.setText(text)
         self.lbl.adjustSize()
 
