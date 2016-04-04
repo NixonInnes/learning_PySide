@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys, random
+import sys
 from PySide import QtGui, QtCore
 
 
@@ -8,24 +8,25 @@ class Editor(QtGui.QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.fname = ''
         self.initUI()
 
     def initUI(self):
-        self.setGeometry(100, 100, 500, 500)
-        self.setWindowTitle('Text Editor')
+        self.setGeometry(100, 100, 800, 800)
+        self.setWindowTitle('NixEditor')
         self.center()
 
         self.editor = QtGui.QTextEdit()
         self.setCentralWidget(self.editor)
 
-        statusbar = self.statusBar()
+        self.statusbar = self.statusBar()
         menubar = self.menuBar()
         self.filemenu = menubar.addMenu('&File')
         self.helpmenu = menubar.addMenu('&Help')
         self.add_actions()
 
         self.show()
-        statusbar.showMessage('Ready')
+        self.statusbar.showMessage('Ready')
 
     def center(self):
         screen = QtGui.QDesktopWidget().screenGeometry()
@@ -53,16 +54,17 @@ class Editor(QtGui.QMainWindow):
 
 
     def fopenDialog(self):
-        fname, _ = QtGui.QFileDialog.getOpenFileName(self, 'Open File', '/home')
-        with open(fname, 'r') as file:
-            data = file.read()
-            self.editor.setText(data)
+        self.fname, _ = QtGui.QFileDialog.getOpenFileName(self, 'Open File')
+        with open(self.fname, 'r') as file:
+            self.editor.setText(file.read())
+        self.statusbar.showMessage('Opened %s' % self.fname)
 
     def fsaveDialog(self):
-        fname, _ = QtGui.QFileDialog.getOpenFileName(self, 'Save File', '/home')
-        with open(fname, 'w') as file:
-            data = self.editor.text
-            file.write(data)
+        if not self.fname:
+            self.fname, _ = QtGui.QFileDialog.getSaveFileName(self, 'Save File')
+        with open(self.fname, 'wt') as file:
+            file.write(self.editor.toPlainText())
+        self.statusbar.showMessage('Saved %s' % self.fname)
 
     def closeEvent(self, event):
         reply = QtGui.QMessageBox.question(self, 'Message',
